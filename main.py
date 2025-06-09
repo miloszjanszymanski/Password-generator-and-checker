@@ -5,6 +5,23 @@ from datetime import datetime
 PASSWORD_FILE = "popular_passwords.txt"
 LOG_FILE = "password_log.txt"
 
+def generate_password(length):
+    """Generate a random password with given length"""
+    chars = string.ascii_letters + string.digits + string.punctuation
+    password = ''.join(random.choice(chars) for _ in range(length))
+    return password
+
+def check_password_in_file(password):
+    """Check if password exists in password file"""
+    try:
+        with open(PASSWORD_FILE, "r") as file:
+            stored_passwords = file.read().splitlines()
+            return password in stored_passwords
+    except FileNotFoundError:
+        print(f"Error: {PASSWORD_FILE} not found!")
+        return False
+
+
 def main():
     print("Password Manager")
     print("1 - Generate new password")
@@ -25,19 +42,9 @@ def main():
             except ValueError:
                 print("Invalid input! Please enter a number.")
 
-        
-
-        else:
-            print("Invalid choice. Please enter 1, 2 or 3.")
 
 if __name__ == "__main__":
     main()
-
-def generate_password(length):
-    """Generate a random password with given length"""
-    chars = string.ascii_letters + string.digits + string.punctuation
-    password = ''.join(random.choice(chars) for _ in range(length))
-    return password
 
 def log_password(password):
     """Log generated password with timestamp to log file"""
