@@ -2,7 +2,7 @@ import random
 import string
 from datetime import datetime
 
-PASSWORD_FILE = "popular_passwords.txt"
+PASSWORD_FILE = "pass.txt"
 LOG_FILE = "password_log.txt"
 
 def generate_password(length):
@@ -21,12 +21,24 @@ def check_password_in_file(password):
         print(f"Error: {PASSWORD_FILE} not found!")
         return False
 
+def log_password(password):
+    """Log generated password with timestamp to log file"""
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    log_entry = f"{timestamp} - Generated password: {password}\n"
+
+    try:
+        with open(LOG_FILE, "a") as file:
+            file.write(log_entry)
+        print(f"Password logged to {LOG_FILE}")
+    except IOError as e:
+        print(f"Error writing to log file: {e}")
 
 def main():
     print("Password Manager")
     print("1 - Generate new password")
     print("2 - Check if password exists in database")
     print("3 - Exit")
+
     while True:
         choice = input("Your choice (1/2/3): ").strip()
 
@@ -42,18 +54,19 @@ def main():
             except ValueError:
                 print("Invalid input! Please enter a number.")
 
+        elif choice == "2":
+            password = input("Enter password to check: ").strip()
+            if check_password_in_file(password):
+                print("This password EXISTS in the database.")
+            else:
+                print("This password DOES NOT EXIST in the database.")
+
+        elif choice == "3":
+            print("Goodbye!")
+            break
+
+        else:
+            print("Invalid choice. Please enter 1, 2 or 3.")
 
 if __name__ == "__main__":
     main()
-
-def log_password(password):
-    """Log generated password with timestamp to log file"""
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    log_entry = f"{timestamp} - Generated password: {password}\n"
-
-    try:
-        with open(LOG_FILE, "a") as file:
-            file.write(log_entry)
-        print(f"Password logged to {LOG_FILE}")
-    except IOError as e:
-        print(f"Error writing to log file: {e}")
