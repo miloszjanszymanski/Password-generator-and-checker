@@ -2,7 +2,7 @@ import random
 import string
 from datetime import datetime
 
-PASSWORD_FILE = "pass.txt"
+PASSWORD_FILE = "popular_passwords.txt"
 LOG_FILE = "password_log.txt"
 
 def generate_password(length):
@@ -57,7 +57,7 @@ def main():
         elif choice == "2":
             password = input("Enter password to check: ").strip()
             if check_password_in_file(password):
-                print("This password EXISTS in the database.")
+                print("This password EXISTS in the database. CHANGE IT TO SOMETHING LESS OBVIOUS")
             else:
                 print("This password DOES NOT EXIST in the database.")
 
